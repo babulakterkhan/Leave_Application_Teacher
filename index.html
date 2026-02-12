@@ -1,858 +1,168 @@
 <!DOCTYPE html>
 <html lang="bn">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ছুটির আবেদন পত্র জেনারেটর</title>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        body {
-            min-height: 100vh;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            padding: 20px;
-            font-family: 'Noto Sans Bengali', Arial, sans-serif;
-        }
-        
-        .header {
-            text-align: center;
-            margin-bottom: 30px;
-            color: white;
-        }
-        
-        .header h1 {
-            font-size: 32px;
-            margin-bottom: 10px;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-        }
-        
-        .header p {
-            font-size: 16px;
-            opacity: 0.9;
-        }
-        
-        .container {
-            display: flex;
-            gap: 30px;
-            max-width: 1400px;
-            margin: 0 auto;
-            flex-wrap: wrap;
-            justify-content: center;
-        }
-        
-        .form-card, .output-card {
-            flex: 1;
-            min-width: 350px;
-            max-width: 500px;
-            background: white;
-            border-radius: 15px;
-            padding: 25px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
-        }
-        
-        .form-card h2, .output-card h2 {
-            color: #4a5568;
-            margin-bottom: 20px;
-            padding-bottom: 10px;
-            border-bottom: 2px solid #e2e8f0;
-            font-size: 20px;
-        }
-        
-        .form-group {
-            margin-bottom: 15px;
-        }
-        
-        .form-group label {
-            display: block;
-            margin-bottom: 5px;
-            color: #4a5568;
-            font-weight: 500;
-        }
-        
-        .form-group input,
-        .form-group select,
-        .form-group textarea {
-            width: 100%;
-            padding: 12px;
-            border: 2px solid #e2e8f0;
-            border-radius: 8px;
-            font-size: 16px;
-            outline: none;
-            transition: border-color 0.3s;
-        }
-        
-        .form-group input:focus,
-        .form-group select:focus,
-        .form-group textarea:focus {
-            border-color: #667eea;
-        }
-        
-        .leave-duration {
-            display: flex;
-            gap: 15px;
-            margin-bottom: 15px;
-            padding: 15px;
-            background: #f8f9fa;
-            border-radius: 10px;
-        }
-        
-        .leave-duration label {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            cursor: pointer;
-            padding: 10px 20px;
-            border-radius: 8px;
-            transition: all 0.3s;
-            border: 2px solid transparent;
-        }
-        
-        .leave-duration label:hover {
-            background: #e9ecef;
-        }
-        
-        .leave-duration input[type="radio"] {
-            width: 18px;
-            height: 18px;
-            cursor: pointer;
-        }
-        
-        .leave-duration input[type="radio"]:checked + span {
-            font-weight: 600;
-            color: #667eea;
-        }
-        
-        .leave-duration label:has(input:checked) {
-            background: #e8eaff;
-            border-color: #667eea;
-        }
-        
-        .date-group {
-            display: flex;
-            gap: 10px;
-        }
-        
-        .date-group .form-group {
-            flex: 1;
-        }
-        
-        .single-date {
-            max-width: 50%;
-        }
-        
-        .btn-group {
-            display: flex;
-            gap: 10px;
-            margin-top: 20px;
-        }
-        
-        .btn-primary {
-            flex: 1;
-            padding: 14px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: transform 0.2s, box-shadow 0.2s;
-        }
-        
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
-        }
-        
-        .btn-reset {
-            padding: 14px 20px;
-            background: #e2e8f0;
-            color: #4a5568;
-            border: none;
-            border-radius: 8px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-        }
-        
-        .backup-section {
-            background: #fff3cd;
-            padding: 15px;
-            border-radius: 10px;
-            margin-top: 15px;
-            border: 1px solid #ffc107;
-        }
-        
-        .backup-section h3 {
-            color: #856404;
-            font-size: 14px;
-            margin-bottom: 10px;
-        }
-        
-        .backup-buttons {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-        }
-        
-        .btn-backup {
-            flex: 1;
-            padding: 10px 15px;
-            background: linear-gradient(135deg, #f39c12 0%, #e67e22 100%);
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-size: 14px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: transform 0.2s, box-shadow 0.2s;
-        }
-        
-        .btn-backup:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(243, 156, 18, 0.3);
-        }
-        
-        .btn-restore {
-            flex: 1;
-            padding: 10px 15px;
-            background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-size: 14px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: transform 0.2s, box-shadow 0.2s;
-        }
-        
-        .btn-restore:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(52, 152, 219, 0.3);
-        }
-        
-        .btn-clear-backup {
-            padding: 10px 15px;
-            background: #e74c3c;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-size: 14px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: transform 0.2s;
-        }
-        
-        .btn-clear-backup:hover {
-            transform: translateY(-2px);
-        }
-        
-        .backup-status {
-            font-size: 12px;
-            color: #856404;
-            margin-top: 8px;
-            font-style: italic;
-        }
-        
-        .toast {
-            position: fixed;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            padding: 12px 24px;
-            border-radius: 8px;
-            color: white;
-            font-weight: 600;
-            z-index: 9999;
-            animation: fadeInOut 3s ease-in-out;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
-        }
-        
-        .toast-success {
-            background: linear-gradient(135deg, #27ae60 0%, #2ecc71 100%);
-        }
-        
-        .toast-error {
-            background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
-        }
-        
-        @keyframes fadeInOut {
-            0% { opacity: 0; transform: translateX(-50%) translateY(20px); }
-            15% { opacity: 1; transform: translateX(-50%) translateY(0); }
-            85% { opacity: 1; transform: translateX(-50%) translateY(0); }
-            100% { opacity: 0; transform: translateX(-50%) translateY(-20px); }
-        }
-        
-        .btn-print {
-            padding: 12px 24px;
-            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        
-        .btn-print:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
-        }
-        
-        .output-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-            padding-bottom: 10px;
-            border-bottom: 2px solid #e2e8f0;
-        }
-        
-        .application-letter {
-            padding: var(--margin-size, 20px);
-            border: 1px solid #e2e8f0;
-            border-radius: 8px;
-            line-height: var(--line-height, 2);
-            font-size: var(--font-size, 16px);
-            transition: padding 0.3s ease, line-height 0.3s ease, font-size 0.3s ease;
-        }
-        
-        .margin-control {
-            background: #f8f9fa;
-            padding: 15px;
-            border-radius: 10px;
-            margin-bottom: 15px;
-        }
-        
-        .margin-control label {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 10px;
-            color: #4a5568;
-            font-weight: 500;
-        }
-        
-        .margin-slider {
-            width: 100%;
-            height: 8px;
-            border-radius: 4px;
-            background: linear-gradient(to right, #e2e8f0, #667eea);
-            outline: none;
-            -webkit-appearance: none;
-            cursor: pointer;
-        }
-        
-        .margin-slider::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            width: 24px;
-            height: 24px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            cursor: pointer;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.2);
-            transition: transform 0.2s;
-        }
-        
-        .margin-slider::-webkit-slider-thumb:hover {
-            transform: scale(1.1);
-        }
-        
-        .margin-slider::-moz-range-thumb {
-            width: 24px;
-            height: 24px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            cursor: pointer;
-            border: none;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.2);
-        }
-        
-        .margin-value {
-            background: #667eea;
-            color: white;
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 14px;
-            font-weight: 600;
-        }
-        
-        .lineheight-value {
-            background: #11998e;
-            color: white;
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 14px;
-            font-weight: 600;
-        }
-        
-        .lineheight-slider {
-            width: 100%;
-            height: 8px;
-            border-radius: 4px;
-            background: linear-gradient(to right, #e2e8f0, #11998e);
-            outline: none;
-            -webkit-appearance: none;
-            cursor: pointer;
-        }
-        
-        .lineheight-slider::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            width: 24px;
-            height: 24px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
-            cursor: pointer;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.2);
-            transition: transform 0.2s;
-        }
-        
-        .lineheight-slider::-webkit-slider-thumb:hover {
-            transform: scale(1.1);
-        }
-        
-        .lineheight-slider::-moz-range-thumb {
-            width: 24px;
-            height: 24px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
-            cursor: pointer;
-            border: none;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.2);
-        }
-        
-        .fontsize-value {
-            background: #e74c3c;
-            color: white;
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 14px;
-            font-weight: 600;
-        }
-        
-        .fontsize-slider {
-            width: 100%;
-            height: 8px;
-            border-radius: 4px;
-            background: linear-gradient(to right, #e2e8f0, #e74c3c);
-            outline: none;
-            -webkit-appearance: none;
-            cursor: pointer;
-        }
-        
-        .fontsize-slider::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            width: 24px;
-            height: 24px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
-            cursor: pointer;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.2);
-            transition: transform 0.2s;
-        }
-        
-        .fontsize-slider::-webkit-slider-thumb:hover {
-            transform: scale(1.1);
-        }
-        
-        .fontsize-slider::-moz-range-thumb {
-            width: 24px;
-            height: 24px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
-            cursor: pointer;
-            border: none;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.2);
-        }
-        
-        .letter-header {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-        
-        .letter-date {
-            text-align: right;
-            margin-bottom: 15px;
-        }
-        
-        .letter-subject {
-            margin-bottom: 15px;
-        }
-        
-        .letter-body {
-            text-indent: 40px;
-            text-align: justify;
-            margin-bottom: 15px;
-        }
-        
-        .letter-signature {
-            text-align: right;
-            margin-top: 40px;
-        }
-        
-        .office-use {
-            margin-top: 40px;
-            padding-top: 20px;
-            border-top: 1px dashed #ccc;
-        }
-        
-        .office-use-fields {
-            display: flex;
-            gap: 20px;
-            flex-wrap: wrap;
-        }
-        
-        .placeholder {
-            background: white;
-            border-radius: 15px;
-            padding: 40px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
-            text-align: center;
-            color: #718096;
-        }
-        
-        .placeholder-icon {
-            font-size: 60px;
-            margin-bottom: 20px;
-        }
-        
-        .footer {
-            text-align: center;
-            margin-top: 30px;
-            color: white;
-            opacity: 0.8;
-            font-size: 14px;
-        }
-        
-        .hidden {
-            display: none !important;
-        }
-        
-        .info-badge {
-            display: inline-block;
-            padding: 4px 12px;
-            background: #e8eaff;
-            color: #667eea;
-            border-radius: 20px;
-            font-size: 13px;
-            margin-left: 10px;
-        }
-        
-        @media print {
-            body {
-                background: white;
-                padding: 0;
-            }
-            .form-card, .header, .footer, .no-print, .output-header {
-                display: none !important;
-            }
-            .output-card {
-                box-shadow: none;
-                border: none;
-                max-width: 100%;
-                padding: 0;
-            }
-            .application-letter {
-                border: none;
-            }
-            @page {
-                margin: 10mm;
-                size: A4;
-            }
-        }
-        
-        @media (max-width: 768px) {
-            .container {
-                flex-direction: column;
-            }
-            .form-card, .output-card {
-                max-width: 100%;
-            }
-            .date-group {
-                flex-direction: column;
-            }
-            .single-date {
-                max-width: 100%;
-            }
-            .leave-duration {
-                flex-direction: column;
-                gap: 10px;
-            }
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ছুটির আবেদন পত্র</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{min-height:100vh;background:linear-gradient(135deg,#667eea,#764ba2);padding:20px;font-family:'Noto Sans Bengali',Arial,sans-serif}
+.header{text-align:center;margin-bottom:30px;color:white}
+.header h1{font-size:28px;text-shadow:2px 2px 4px rgba(0,0,0,0.3)}
+.container{display:flex;gap:20px;max-width:1300px;margin:0 auto;flex-wrap:wrap;justify-content:center}
+.form-card,.output-card{flex:1;min-width:300px;max-width:500px;background:white;border-radius:15px;padding:20px;box-shadow:0 10px 40px rgba(0,0,0,0.2)}
+.form-card h2,.output-card h2{color:#4a5568;margin-bottom:15px;padding-bottom:10px;border-bottom:2px solid #e2e8f0;font-size:18px}
+.form-group{margin-bottom:12px}
+.form-group label{display:block;margin-bottom:5px;color:#4a5568;font-weight:500}
+.form-group input,.form-group select,.form-group textarea{width:100%;padding:10px;border:2px solid #e2e8f0;border-radius:8px;font-size:15px;outline:none}
+.form-group input:focus,.form-group select:focus,.form-group textarea:focus{border-color:#667eea}
+.leave-duration{display:flex;gap:10px;margin-bottom:12px;padding:10px;background:#f8f9fa;border-radius:8px}
+.leave-duration label{display:flex;align-items:center;gap:5px;cursor:pointer;padding:8px 15px;border-radius:6px;border:2px solid transparent}
+.leave-duration input{width:16px;height:16px;cursor:pointer}
+.date-group{display:flex;gap:8px}
+.date-group .form-group{flex:1}
+.btn-group{display:flex;gap:8px;margin-top:15px}
+.btn-primary{flex:1;padding:12px;background:linear-gradient(135deg,#667eea,#764ba2);color:white;border:none;border-radius:8px;font-size:15px;font-weight:600;cursor:pointer}
+.btn-reset{padding:12px 15px;background:#e2e8f0;color:#4a5568;border:none;border-radius:8px;font-weight:600;cursor:pointer}
+.backup-section{background:#fff3cd;padding:12px;border-radius:8px;margin-top:12px;border:1px solid #ffc107}
+.backup-section h3{color:#856404;font-size:13px;margin-bottom:8px}
+.backup-buttons{display:flex;gap:8px;flex-wrap:wrap}
+.btn-backup,.btn-restore,.btn-clear-backup{flex:1;padding:8px;background:linear-gradient(135deg,#f39c12,#e67e22);color:white;border:none;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer}
+.btn-restore{background:linear-gradient(135deg,#3498db,#2980b9)}
+.btn-clear-backup{flex:0;padding:8px 12px;background:#e74c3c}
+.backup-status{font-size:11px;color:#856404;margin-top:6px}
+.saved-apps-section{background:#e8f5e9;padding:12px;border-radius:8px;margin-top:12px;border:1px solid #4caf50}
+.saved-apps-section h3{color:#2e7d32;font-size:13px;margin-bottom:8px}
+.save-app-btn{width:100%;padding:10px;background:linear-gradient(135deg,#4caf50,#2e7d32);color:white;border:none;border-radius:6px;font-size:13px;font-weight:600;cursor:pointer;margin-bottom:8px}
+.saved-apps-list{max-height:150px;overflow-y:auto;border:1px solid #c8e6c9;border-radius:6px;margin-bottom:8px}
+.saved-app-item{display:flex;justify-content:space-between;align-items:center;padding:8px;border-bottom:1px solid #e8f5e9;background:white}
+.saved-app-item:last-child{border-bottom:none}
+.saved-app-info{flex:1}
+.saved-app-name{font-weight:600;color:#333;font-size:13px}
+.saved-app-date{font-size:10px;color:#666}
+.saved-app-actions{display:flex;gap:4px}
+.btn-load-app,.btn-delete-app{padding:4px 8px;border:none;border-radius:4px;font-size:10px;cursor:pointer}
+.btn-load-app{background:#2196f3;color:white}
+.btn-delete-app{background:#f44336;color:white}
+.export-import-btns{display:flex;gap:8px}
+.btn-export,.btn-import{flex:1;padding:8px;border:none;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer;color:white}
+.btn-export{background:linear-gradient(135deg,#9c27b0,#7b1fa2)}
+.btn-import{background:linear-gradient(135deg,#ff5722,#e64a19)}
+.no-saved-apps{padding:15px;text-align:center;color:#666;font-size:12px}
+.app-counter{font-size:11px;color:#2e7d32;margin-bottom:8px}
+.btn-print{padding:10px 20px;background:linear-gradient(135deg,#11998e,#38ef7d);color:white;border:none;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer}
+.output-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:15px;padding-bottom:8px;border-bottom:2px solid #e2e8f0}
+.application-letter{padding:var(--margin-size,20px);border:1px solid #e2e8f0;border-radius:8px;line-height:var(--line-height,2);font-size:var(--font-size,16px)}
+.margin-control{background:#f8f9fa;padding:12px;border-radius:8px;margin-bottom:12px}
+.margin-control label{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;color:#4a5568;font-weight:500}
+.margin-slider,.lineheight-slider,.fontsize-slider{width:100%;height:6px;border-radius:3px;background:linear-gradient(to right,#e2e8f0,#667eea);outline:none;-webkit-appearance:none;cursor:pointer}
+.margin-slider::-webkit-slider-thumb,.lineheight-slider::-webkit-slider-thumb,.fontsize-slider::-webkit-slider-thumb{-webkit-appearance:none;width:20px;height:20px;border-radius:50%;background:linear-gradient(135deg,#667eea,#764ba2);cursor:pointer}
+.margin-value,.lineheight-value,.fontsize-value{background:#667eea;color:white;padding:3px 10px;border-radius:15px;font-size:12px;font-weight:600}
+.lineheight-value{background:#11998e}
+.fontsize-value{background:#e74c3c}
+.lineheight-slider{background:linear-gradient(to right,#e2e8f0,#11998e)}
+.lineheight-slider::-webkit-slider-thumb{background:linear-gradient(135deg,#11998e,#38ef7d)}
+.fontsize-slider{background:linear-gradient(to right,#e2e8f0,#e74c3c)}
+.fontsize-slider::-webkit-slider-thumb{background:linear-gradient(135deg,#e74c3c,#c0392b)}
+.letter-date{text-align:right;margin-bottom:12px}
+.letter-subject{margin-bottom:12px}
+.letter-body{text-indent:35px;text-align:justify;margin-bottom:12px}
+.letter-signature{text-align:right;margin-top:35px}
+.office-use{margin-top:35px;padding-top:15px;border-top:1px dashed #ccc}
+.office-use-fields{display:flex;gap:15px;flex-wrap:wrap}
+.placeholder{background:white;border-radius:15px;padding:30px;box-shadow:0 10px 40px rgba(0,0,0,0.2);text-align:center;color:#718096}
+.placeholder-icon{font-size:50px;margin-bottom:15px}
+.footer{text-align:center;margin-top:25px;color:white;opacity:0.8;font-size:13px}
+.hidden{display:none!important}
+.toast{position:fixed;bottom:15px;left:50%;transform:translateX(-50%);padding:10px 20px;border-radius:8px;color:white;font-weight:600;z-index:9999;animation:fadeInOut 3s}
+.toast-success{background:linear-gradient(135deg,#27ae60,#2ecc71)}
+.toast-error{background:linear-gradient(135deg,#e74c3c,#c0392b)}
+@keyframes fadeInOut{0%{opacity:0;transform:translateX(-50%) translateY(15px)}15%{opacity:1;transform:translateX(-50)}85%{opacity:1}100%{opacity:0;transform:translateX(-50%) translateY(-15px)}}
+@media print{body{background:white;padding:0}.form-card,.header,.footer,.no-print,.output-header,.margin-control{display:none!important}.output-card{box-shadow:none;border:none;max-width:100%;padding:0}.application-letter{border:none}@page{margin:10mm;size:A4}}
+@media (max-width:768px){.container{flex-direction:column}.form-card,.output-card{max-width:100%}.date-group{flex-direction:column}.leave-duration{flex-direction:column;gap:5px}}
+</style>
 </head>
 <body>
-    <div class="header">
-        <h1>ছুটির আবেদন পত্র জেনারেটর</h1>
-        <p>ফর্মটি পূরণ করুন এবং আবেদন পত্র প্রিন্ট করুন</p>
-    </div>
-
-    <div class="container">
-        <!-- Input Form -->
-        <div class="form-card">
-            <h2>📝 তথ্য পূরণ করুন</h2>
-            
-            <form id="leaveForm">
-                <div class="form-group">
-                    <label>আবেদনকারীর নাম *</label>
-                    <input type="text" id="applicantName" placeholder="আপনার নাম লিখুন" required>
-                </div>
-
-                <div class="form-group">
-                    <label>পদবী *</label>
-                    <input type="text" id="designation" placeholder="যেমন: সহকারী শিক্ষক" required>
-                </div>
-
-                <div class="form-group">
-                    <label>বিভাগ/বিষয়</label>
-                    <input type="text" id="department" placeholder="যেমন: গণিত">
-                </div>
-
-                <div class="form-group">
-                    <label>ছুটির ধরন *</label>
-                    <select id="leaveType" required>
-                        <option value="বেতনহীন ছুটি">বেতনহীন ছুটি</option>
-                        <option value="বার্ষিক ছুটি">বার্ষিক ছুটি</option>
-                        <option value="অসুস্থতাজনিত ছুটি">অসুস্থতাজনিত ছুটি</option>
-                        <option value="বিশেষ ছুটি">বিশেষ ছুটি</option>
-                        <option value="মাতৃত্বকালীন ছুটি">মাতৃত্বকালীন ছুটি</option>
-                        <option value="ছুটি">ছুটি</option>
-                    </select>
-                </div>
-
-                <!-- ছুটির মেয়াদ: একদিন বা একাধিক -->
-                <div class="form-group">
-                    <label>ছুটির মেয়াদ *</label>
-                    <div class="leave-duration">
-                        <label>
-                            <input type="radio" name="leaveDuration" value="single" checked onchange="toggleDateFields()">
-                            <span>📅 একদিনের ছুটি</span>
-                        </label>
-                        <label>
-                            <input type="radio" name="leaveDuration" value="multiple" onchange="toggleDateFields()">
-                            <span>📆 একাধিক দিনের ছুটি</span>
-                        </label>
-                    </div>
-                </div>
-
-                <!-- একদিনের ছুটি - শুধু একটি তারিখ -->
-                <div id="singleDaySection">
-                    <div class="form-group single-date">
-                        <label>ছুটির তারিখ *</label>
-                        <input type="date" id="singleDate" required>
-                    </div>
-                </div>
-
-                <!-- একাধিক দিনের ছুটি - শুরু ও শেষ তারিখ -->
-                <div id="multipleDaySection" class="hidden">
-                    <div class="date-group">
-                        <div class="form-group">
-                            <label>শুরুর তারিখ *</label>
-                            <input type="date" id="startDate">
-                        </div>
-                        <div class="form-group">
-                            <label>শেষের তারিখ *</label>
-                            <input type="date" id="endDate">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label>মোট দিন *</label>
-                        <input type="number" id="totalDays" placeholder="যেমন: 5" min="1">
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label>ছুটির কারণ *</label>
-                    <textarea id="reason" rows="3" placeholder="ক) পারিবারিক সমস্যার...খ) অসুস্থতার ... এরকমভাবে" required></textarea>
-                </div>
-
-                <div class="form-group">
-                    <label>প্রতিষ্ঠানের নাম</label>
-                    <input type="text" id="schoolName" value="উদাহরণ উচ্চ বিদ্যালয়">
-                </div>
-
-                <div class="form-group">
-                    <label>প্রতিষ্ঠানের ঠিকানা</label>
-                    <input type="text" id="schoolAddress" value="গ্রাম: উদাহরণ, জেলা: উদাহরণ">
-                </div>
-
-                <div class="btn-group">
-                    <button type="submit" class="btn-primary">📄 আবেদন তৈরি করুন</button>
-                    <button type="button" class="btn-reset" onclick="resetForm()">🔄</button>
-                </div>
-                
-                <!-- Backup Section -->
-                <div class="backup-section">
-                    <h3>💾 ডাটা ব্যাকআপ ও রিস্টোর</h3>
-                    <div class="backup-buttons">
-                        <button type="button" class="btn-backup" onclick="saveBackup()">💾 ব্যাকআপ নিন</button>
-                        <button type="button" class="btn-restore" onclick="restoreBackup()">📥 রিস্টোর করুন</button>
-                        <button type="button" class="btn-clear-backup" onclick="clearBackup()">🗑️</button>
-                    </div>
-                    <div class="backup-status" id="backupStatus"></div>
-                </div>
-            </form>
-        </div>
-
-        <!-- Output Preview -->
-        <div class="output-card" id="outputCard">
-            <div id="placeholder" class="placeholder">
-                <div class="placeholder-icon">📄</div>
-                <h3>আবেদন পত্র প্রিভিউ</h3>
-                <p>ফর্মটি পূরণ করে "আবেদন তৈরি করুন" বাটনে ক্লিক করুন</p>
-            </div>
-            
-            <div id="output" style="display: none;">
-                <div class="output-header no-print">
-                    <h2>📋 আবেদন পত্র প্রিভিউ</h2>
-                    <button class="btn-print" onclick="window.print()">🖨️ প্রিন্ট করুন</button>
-                </div>
-                
-                <!-- Margin Slider Control -->
-                <div class="margin-control no-print">
-                    <label>
-                        <span>📏 চারদিকের মার্জিন:</span>
-                        <span class="margin-value" id="marginValue">20px</span>
-                    </label>
-                    <input type="range" class="margin-slider" id="marginSlider" min="5" max="60" value="20" oninput="updateMargin(this.value)">
-                </div>
-                
-                <!-- Line Height Slider Control -->
-                <div class="margin-control no-print">
-                    <label>
-                        <span>📝 লাইন হাইট:</span>
-                        <span class="lineheight-value" id="lineHeightValue">2.0</span>
-                    </label>
-                    <input type="range" class="lineheight-slider" id="lineHeightSlider" min="1.2" max="3" step="0.1" value="2" oninput="updateLineHeight(this.value)">
-                </div>
-                
-                <!-- Font Size Slider Control -->
-                <div class="margin-control no-print">
-                    <label>
-                        <span>🔤 ফন্ট সাইজ:</span>
-                        <span class="fontsize-value" id="fontSizeValue">16px</span>
-                    </label>
-                    <input type="range" class="fontsize-slider" id="fontSizeSlider" min="10" max="24" value="16" oninput="updateFontSize(this.value)">
-                </div>
-                
-                <div class="application-letter" id="applicationLetter">
-                    <!-- Application letter will be generated here -->
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="footer">
-        © 2024 ছুটির আবেদন পত্র জেনারেটর | Z.ai
-    </div>
-
-    <script>
-        // Toggle between single day and multiple days
-        function toggleDateFields() {
-            const isSingle = document.querySelector('input[name="leaveDuration"]:checked').value === 'single';
-            
-            const singleSection = document.getElementById('singleDaySection');
-            const multipleSection = document.getElementById('multipleDaySection');
-            
-            if (isSingle) {
-                singleSection.classList.remove('hidden');
-                multipleSection.classList.add('hidden');
-                document.getElementById('singleDate').required = true;
-                document.getElementById('startDate').required = false;
-                document.getElementById('endDate').required = false;
-                document.getElementById('totalDays').required = false;
-            } else {
-                singleSection.classList.add('hidden');
-                multipleSection.classList.remove('hidden');
-                document.getElementById('singleDate').required = false;
-                document.getElementById('startDate').required = true;
-                document.getElementById('endDate').required = true;
-                document.getElementById('totalDays').required = true;
-            }
-        }
-
-        function getBengaliDate() {
-            const today = new Date();
-            return today.toLocaleDateString('bn-BD', { year: 'numeric', month: 'long', day: 'numeric' });
-        }
-
-        function formatDate(dateStr) {
-            if (!dateStr) return '';
-            const date = new Date(dateStr);
-            return date.toLocaleDateString('bn-BD');
-        }
-
-        document.getElementById('leaveForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const isSingleDay = document.querySelector('input[name="leaveDuration"]:checked').value === 'single';
-            
-            const data = {
-                applicantName: document.getElementById('applicantName').value,
-                designation: document.getElementById('designation').value,
-                department: document.getElementById('department').value,
-                leaveType: document.getElementById('leaveType').value,
-                isSingleDay: isSingleDay,
-                singleDate: formatDate(document.getElementById('singleDate').value),
-                startDate: formatDate(document.getElementById('startDate').value),
-                endDate: formatDate(document.getElementById('endDate').value),
-                totalDays: document.getElementById('totalDays').value,
-                reason: document.getElementById('reason').value,
-                schoolName: document.getElementById('schoolName').value,
-                schoolAddress: document.getElementById('schoolAddress').value,
-                applicationDate: getBengaliDate()
-            };
-
-            const deptText = data.department ? ` (${data.department} বিভাগ)` : '';
-            
-            // ইংরেজি সংখ্যা থেকে বাংলা সংখ্যা রূপান্তর
-            const bengaliDigits = ['০', '১', '২', '৩', '৪', '৫', '৬', '৭', '৮', '৯'];
-            function toBengaliNumber(num) {
-                return String(num).replace(/[0-9]/g, (d) => bengaliDigits[parseInt(d)]);
-            }
-            
-            const totalDaysBengali = toBengaliNumber(data.totalDays);
-            
-            // ছুটির মেয়াদ টেক্সট তৈরি
-            let durationText = '';
-            if (data.isSingleDay) {
-                durationText = `<stron>${data.singleDate}</stron> তারিখে একদিনের <stron>${data.leaveType}</stron> প্রয়োজন।`;
-            } else {
-                durationText = `<stron>${data.startDate}</stron> তারিখ হতে <stron>${data.endDate}</stron> তারিখ পর্যন্ত মোট <stron>${totalDaysBengali}</stron> দিনের <stron>${data.leaveType}</stron> প্রয়োজন।`;
-            }
-            
-            const letterHTML = `
-                <div class="letter-date">
-                    তারিখ: ${data.applicationDate}
-                </div>
-
-                <div style="margin-bottom: 15px;">
-                    বরাবর,,<br>
-                    <stron>অধ্যক্ষ,</stron><br>
-                    ${data.schoolName}<br>
-                    ${data.schoolAddress}
-                </div>
-
-                <div class="letter-subject">
-                    বিষয়: <stron>${data.leaveType}</stron>র জন্য আবেদন।
-                </div>
-
-                <div style="margin-bottom: 15px;">মহোদয়,</div>
-
-                <div class="letter-body">
-                    বিনীত নিবেদন এই যে, আমি <stron>${data.applicantName}</stron>, আপনার প্রতিষ্ঠানের একজন <stron>${data.designation}</stron>${deptText} হিসেবে কর্মরত আছি। আমার <stron>${data.reason}</stron> কারণে ${durationText}
-                </div>
-
-                <div class="letter-body">
-                    এই মর্মে আমি আপনার নিকট বিনীতভাবে উক্ত <stron>${data.leaveType}</stron>র জন্য আবেদন করছি। মহোদয়, আমার আবেদন অনুকূলে বিবেচনা করে প্রয়োজনীয় ব্যবস্থা গ্রহণের জন্য বিনীত অনুরোধ করছি।
+<div class="header"><h1>ছুটির আবেদন পত্র জেনারেটর</h1></div>
+<div class="container">
+<div class="form-card">
+<h2>📝 তথ্য পূরণ করুন</h2>
+<form id="leaveForm">
+<div class="form-group"><label>আবেদনকারীর নাম *</label><input type="text" id="applicantName" placeholder="আপনার নাম লিখুন" required></div>
+<div class="form-group"><label>পদবী *</label><input type="text" id="designation" placeholder="যেমন: সহকারী শিক্ষক" required></div>
+<div class="form-group"><label>বিভাগ/বিষয়</label><input type="text" id="department" placeholder="যেমন: গণিত"></div>
+<div class="form-group"><label>ছুটির ধরন *</label><select id="leaveType" required>
+<option value="বেতনহীন ছুটি">বেতনহীন ছুটি</option>
+<option value="বার্ষিক ছুটি">বার্ষিক ছুটি</option>
+<option value="অসুস্থতার ছুটি">অসুস্থতার ছুটি</option>
+<option value="বিশেষ ছুটি">বিশেষ ছুটি</option>
+<option value="মাতৃত্বকালীন ছুটি">মাতৃত্বকালীন ছুটি</option>
+<option value="ছুটি">ছুটি</option>
+</select></div>
+<div class="form-group"><label>ছুটির মেয়াদ *</label>
+<div class="leave-duration">
+<label><input type="radio" name="leaveDuration" value="single" checked onchange="toggleDateFields()"><span>📅 একদিন</span></label>
+<label><input type="radio" name="leaveDuration" value="multiple" onchange="toggleDateFields()"><span>📆 একাধিক দিন</span></label>
+</div></div>
+<div id="singleDaySection"><div class="form-group"><label>ছুটির তারিখ *</label><input type="date" id="singleDate" required></div></div>
+<div id="multipleDaySection" class="hidden">
+<div class="date-group">
+<div class="form-group"><label>শুরু *</label><input type="date" id="startDate"></div>
+<div class="form-group"><label>শেষ *</label><input type="date" id="endDate"></div>
+</div>
+<div class="form-group"><label>মোট দিন *</label><input type="number" id="totalDays" placeholder="যেমন: 5" min="1"></div>
+</div>
+<div class="form-group"><label>ছুটির কারণ *</label><textarea id="reason" rows="2" placeholder="ক) পারিবারিক সমস্যার...খ) অসুস্থতার" required></textarea></div>
+<div class="form-group"><label>প্রতিষ্ঠানের নাম</label><input type="text" id="schoolName" value="উদাহরণ উচ্চ বিদ্যালয়"></div>
+<div class="form-group"><label>প্রতিষ্ঠানের ঠিকানা</label><input type="text" id="schoolAddress" value="গ্রাম: উদাহরণ, জেলা: উদাহরণ"></div>
+<div class="btn-group">
+<button type="submit" class="btn-primary">📄 আবেদন তৈরি করুন</button>
+<button type="button" class="btn-reset" onclick="resetForm()">🔄</button>
+</div>
+<div class="saved-apps-section">
+<h3>📋 সেভ করা আবেদন</h3>
+<div class="app-counter" id="appCounter">সর্বমোট: ০টি</div>
+<button type="button" class="save-app-btn" onclick="saveCurrentApplication()">➕ সেভ করুন</button>
+<div class="saved-apps-list" id="savedAppsList"><div class="no-saved-apps">কোনো আবেদন নেই</div></div>
+<div class="export-import-btns">
+<button type="button" class="btn-export" onclick="exportAllApplications()">📤 JSON এক্সপোর্ট</button>
+<button type="button" class="btn-import" onclick="document.getElementById('importFile').click()">📥 JSON ইম্পোর্ট</button>
+<input type="file" id="importFile" accept=".json" style="display:none" onchange="importApplications(event)">
+</div></div>
+<div class="backup-section">
+<h3>💾 ব্যাকআপ</h3>
+<div class="backup-buttons">
+<button type="button" class="btn-backup" onclick="saveBackup()">💾 ব্যাকআপ</button>
+<button type="button" class="btn-restore" onclick="restoreBackup()">📥 রিস্টোর</button>
+<button type="button" class="btn-clear-backup" onclick="clearBackup()">🗑️</button>
+</div>
+<div class="backup-status" id="backupStatus"></div>
+</div>
+</form>
+</div>
+<div class="output-card">
+<div id="placeholder" class="placeholder"><div class="placeholder-icon">📄</div><h3>আবেদন পত্র প্রিভিউ</h3><p>ফর্ম পূরণ করুন</p></div>
+<div id="output" style="display:none">
+<div class="output-header no-print"><h2>📋 প্রিভিউ</h2><button class="btn-print" onclick="window.print()">🖨️ প্রিন্ট</button></div>
+<div class="margin-control no-print"><label><span>📏 মার্জিন:</span><span class="margin-value" id="marginValue">20px</span></label><input type="range" class="margin-slider" id="marginSlider" min="5" max="60" value="20" oninput="updateMargin(this.value)"></div>
+<div class="margin-control no-print"><label><span>📝 লাইন হাইট:</span><span class="lineheight-value" id="lineHeightValue">2.0</span></label><input type="range" class="lineheight-slider" id="lineHeightSlider" min="1.2" max="3" step="0.1" value="2" oninput="updateLineHeight(this.value)"></div>
+<div class="margin-control no-print"><label><span>🔤 ফন্ট:</span><span class="fontsize-value" id="fontSizeValue">16px</span></label><input type="range" class="fontsize-slider" id="fontSizeSlider" min="10" max="24" value="16" oninput="updateFontSize(this.value)"></div>
+<div class="application-letter" id="applicationLetter"></div>
+</div></div></div>
+<div class="footer">© 2024 ছুটির আবেদন পত্র জেনারেটর</div>
+<script>
+function toggleDateFields(){const isSingle=document.querySelector('input[name="leaveDuration"]:checked').value==='single';document.getElementById('singleDaySection').classList.toggle('hidden',!isSingle);document.getElementById('multipleDaySection').classList.toggle('hidden',isSingle);document.getElementById('singleDate').required=isSingle;document.getElementById('startDate').required=!isSingle;document.getElementById('endDate').required=!isSingle;document.getElementById('totalDays').required=!isSingle}
+function getBengaliDate(){return new Date().toLocaleDateString('bn-BD',{year:'numeric',month:'long',day:'numeric'})}
+function formatDate(d){return d?new Date(d).toLocaleDateString('bn-BD'):''}
+document.getElementById('leaveForm').addEventListener('submit',function(e){e.preventDefault();const isSingleDay=document.querySelector('input[name="leaveDuration"]:checked').value==='single';const data={applicantName:document.getElementById('applicantName').value,designation:document.getElementById('designation').value,department:document.getElementById('department').value,leaveType:document.getElementById('leaveType').value,isSingleDay,singleDate:formatDate(document.getElementById('singleDate').value),startDate:formatDate(document.getElementById('startDate').value),endDate:formatDate(document.getElementById('endDate').value),totalDays:document.getElementById('totalDays').value,reason:document.getElementById('reason').value,schoolName:document.getElementById('schoolName').value,schoolAddress:document.getElementById('schoolAddress').value,applicationDate:getBengaliDate()};const bengaliDigits=['০','১','২','৩','৪','৫','৬','৭','৮','৯'];const totalDaysBengali=String(data.totalDays).replace(/[0-9]/g,d=>bengaliDigits[parseInt(d)]);const deptText=data.department?` (${data.department} বিভাগ)`:'';const durationText=data.isSingleDay?`<stron>${data.singleDate}</stron> তারিখে একদিনের <stron>${data.leaveType}</stron> প্রয়োজন।`:`<stron>${data.startDate}</stron> হতে <stron>${data.endDate}</stron> পর্যন্ত মোট <stron>${totalDaysBengali}</stron> দিনের <stron>${data.leaveType}</stron> প্রয়োজন।`;document.getElementById('applicationLetter').innerHTML=`
+<div class="letter-date">তারিখ: ${data.applicationDate}</div>
+<div style="margin-bottom:12px">বরাবর,<br><stron>অধ্যক্ষ</stron><br>${data.schoolName}<br>${data.schoolAddress}</div>
+<div class="letter-subject">বিষয়: <stron>${data.leaveType}</stron>র জন্য আবেদন।</div>
+<div style="margin-bottom:12px">মহোদয়,</div>
+<div class="letter-body">বিনীত নিবেদন এই যে, আমি <stron>${data.applicantName}</stron>, আপনার প্রতিষ্ঠানের একজন <stron>${data.designation}</stron>${deptText} হিসেবে কর্মরত আছি। আমার <stron>${data.reason}</stron> কারণে ${durationText}</div>
+ <div class="letter-body">
+                    এই মর্মে আমি আপনার নিকট বিনীতভাবে উক্ত <stron>${data.leaveType}</stron>র জন্য আবেদন করছি। মহোদয় আপনার নিকট বিনীত প্রার্থনা, আমার আবেদন অনুকূলে বিবেচনা করে প্রয়োজনীয় ব্যবস্থা গ্রহণ করে বাধিত করবেন।
                 </div>
 
                 <div class="letter-body" style="margin-bottom: 30px;">
@@ -880,205 +190,26 @@
                 </div>
             `;
 
-            document.getElementById('applicationLetter').innerHTML = letterHTML;
-            document.getElementById('placeholder').style.display = 'none';
-            document.getElementById('output').style.display = 'block';
-        });
-
-        function resetForm() {
-            document.getElementById('leaveForm').reset();
-            document.getElementById('schoolName').value = 'উদাহরণ উচ্চ বিদ্যালয়';
-            document.getElementById('schoolAddress').value = 'গ্রাম: উদাহরণ, জেলা: উদাহরণ';
-            document.getElementById('placeholder').style.display = 'block';
-            document.getElementById('output').style.display = 'none';
-            toggleDateFields(); // Reset to single day view
-        }
-
-        // Initialize
-        toggleDateFields();
-        
-        // ============ Local Storage Functions ============
-        
-        // ফর্ম ডাটা অটো-সেভ (প্রতিটি ইনপুট পরিবর্তনে)
-        function autoSaveFormData() {
-            const formData = {
-                applicantName: document.getElementById('applicantName').value,
-                designation: document.getElementById('designation').value,
-                department: document.getElementById('department').value,
-                leaveType: document.getElementById('leaveType').value,
-                leaveDuration: document.querySelector('input[name="leaveDuration"]:checked').value,
-                singleDate: document.getElementById('singleDate').value,
-                startDate: document.getElementById('startDate').value,
-                endDate: document.getElementById('endDate').value,
-                totalDays: document.getElementById('totalDays').value,
-                reason: document.getElementById('reason').value,
-                schoolName: document.getElementById('schoolName').value,
-                schoolAddress: document.getElementById('schoolAddress').value
-            };
-            localStorage.setItem('leaveAppFormData', JSON.stringify(formData));
-        }
-        
-        // অটো-রিস্টোর ফর্ম ডাটা
-        function autoRestoreFormData() {
-            const savedData = localStorage.getItem('leaveAppFormData');
-            if (savedData) {
-                const formData = JSON.parse(savedData);
-                document.getElementById('applicantName').value = formData.applicantName || '';
-                document.getElementById('designation').value = formData.designation || '';
-                document.getElementById('department').value = formData.department || '';
-                document.getElementById('leaveType').value = formData.leaveType || 'বেতনহীন ছুটি';
-                document.getElementById('singleDate').value = formData.singleDate || '';
-                document.getElementById('startDate').value = formData.startDate || '';
-                document.getElementById('endDate').value = formData.endDate || '';
-                document.getElementById('totalDays').value = formData.totalDays || '';
-                document.getElementById('reason').value = formData.reason || '';
-                document.getElementById('schoolName').value = formData.schoolName || 'উদাহরণ উচ্চ বিদ্যালয়';
-                document.getElementById('schoolAddress').value = formData.schoolAddress || 'গ্রাম: উদাহরণ, জেলা: উদাহরণ';
-                
-                // রেডিও বাটন সেট করা
-                if (formData.leaveDuration === 'multiple') {
-                    document.querySelector('input[name="leaveDuration"][value="multiple"]').checked = true;
-                    toggleDateFields();
-                }
-            }
-        }
-        
-        // সব ইনপুটে অটো-সেভ ইভেন্ট যোগ করা
-        document.querySelectorAll('input, select, textarea').forEach(element => {
-            element.addEventListener('input', autoSaveFormData);
-            element.addEventListener('change', autoSaveFormData);
-        });
-        
-        // ব্যাকআপ নেওয়া
-        function saveBackup() {
-            const formData = {
-                applicantName: document.getElementById('applicantName').value,
-                designation: document.getElementById('designation').value,
-                department: document.getElementById('department').value,
-                leaveType: document.getElementById('leaveType').value,
-                leaveDuration: document.querySelector('input[name="leaveDuration"]:checked').value,
-                singleDate: document.getElementById('singleDate').value,
-                startDate: document.getElementById('startDate').value,
-                endDate: document.getElementById('endDate').value,
-                totalDays: document.getElementById('totalDays').value,
-                reason: document.getElementById('reason').value,
-                schoolName: document.getElementById('schoolName').value,
-                schoolAddress: document.getElementById('schoolAddress').value,
-                margin: document.getElementById('marginSlider').value,
-                lineHeight: document.getElementById('lineHeightSlider').value,
-                fontSize: document.getElementById('fontSizeSlider').value,
-                backupDate: new Date().toLocaleString('bn-BD')
-            };
-            localStorage.setItem('leaveAppBackup', JSON.stringify(formData));
-            showToast('✅ ব্যাকআপ সফলভাবে সংরক্ষিত হয়েছে!', 'success');
-            updateBackupStatus();
-        }
-        
-        // রিস্টোর করা
-        function restoreBackup() {
-            const backupData = localStorage.getItem('leaveAppBackup');
-            if (backupData) {
-                const formData = JSON.parse(backupData);
-                document.getElementById('applicantName').value = formData.applicantName || '';
-                document.getElementById('designation').value = formData.designation || '';
-                document.getElementById('department').value = formData.department || '';
-                document.getElementById('leaveType').value = formData.leaveType || 'বেতনহীন ছুটি';
-                document.getElementById('singleDate').value = formData.singleDate || '';
-                document.getElementById('startDate').value = formData.startDate || '';
-                document.getElementById('endDate').value = formData.endDate || '';
-                document.getElementById('totalDays').value = formData.totalDays || '';
-                document.getElementById('reason').value = formData.reason || '';
-                document.getElementById('schoolName').value = formData.schoolName || 'উদাহরণ উচ্চ বিদ্যালয়';
-                document.getElementById('schoolAddress').value = formData.schoolAddress || 'গ্রাম: উদাহরণ, জেলা: উদাহরণ';
-                
-                // স্লাইডার রিস্টোর
-                if (formData.margin) {
-                    document.getElementById('marginSlider').value = formData.margin;
-                    updateMargin(formData.margin);
-                }
-                if (formData.lineHeight) {
-                    document.getElementById('lineHeightSlider').value = formData.lineHeight;
-                    updateLineHeight(formData.lineHeight);
-                }
-                if (formData.fontSize) {
-                    document.getElementById('fontSizeSlider').value = formData.fontSize;
-                    updateFontSize(formData.fontSize);
-                }
-                
-                // রেডিও বাটন সেট করা
-                if (formData.leaveDuration === 'multiple') {
-                    document.querySelector('input[name="leaveDuration"][value="multiple"]').checked = true;
-                } else {
-                    document.querySelector('input[name="leaveDuration"][value="single"]').checked = true;
-                }
-                toggleDateFields();
-                
-                showToast('✅ ব্যাকআপ থেকে ডাটা রিস্টোর হয়েছে!', 'success');
-            } else {
-                showToast('❌ কোনো ব্যাকআপ পাওয়া যায়নি!', 'error');
-            }
-        }
-        
-        // ব্যাকআপ ডিলিট করা
-        function clearBackup() {
-            if (confirm('আপনি কি নিশ্চিত যে ব্যাকআপ ডিলিট করতে চান?')) {
-                localStorage.removeItem('leaveAppBackup');
-                localStorage.removeItem('leaveAppFormData');
-                updateBackupStatus();
-                showToast('🗑️ ব্যাকআপ মুছে ফেলা হয়েছে!', 'success');
-            }
-        }
-        
-        // ব্যাকআপ স্ট্যাটাস দেখানো
-        function updateBackupStatus() {
-            const backupData = localStorage.getItem('leaveAppBackup');
-            const statusEl = document.getElementById('backupStatus');
-            if (backupData) {
-                const data = JSON.parse(backupData);
-                statusEl.innerHTML = `📦 শেষ ব্যাকআপ: ${data.backupDate || 'অজানা'}`;
-            } else {
-                statusEl.innerHTML = '📭 কোনো ব্যাকআপ নেই';
-            }
-        }
-        
-        // Toast নোটিফিকেশন দেখানো
-        function showToast(message, type) {
-            const toast = document.createElement('div');
-            toast.className = `toast toast-${type}`;
-            toast.textContent = message;
-            document.body.appendChild(toast);
-            
-            setTimeout(() => {
-                toast.remove();
-            }, 3000);
-        }
-        
-        // পেজ লোড হলে অটো-রিস্টোর
-        autoRestoreFormData();
-        updateBackupStatus();
-        
-        // Margin slider functionality
-        function updateMargin(value) {
-            document.documentElement.style.setProperty('--margin-size', value + 'px');
-            document.getElementById('marginValue').textContent = value + 'px';
-        }
-        
-        // Line height slider functionality
-        function updateLineHeight(value) {
-            document.documentElement.style.setProperty('--line-height', value);
-            document.getElementById('lineHeightValue').textContent = parseFloat(value).toFixed(1);
-        }
-        
-        // Font size slider functionality
-        function updateFontSize(value) {
-            document.documentElement.style.setProperty('--font-size', value + 'px');
-            document.getElementById('fontSizeValue').textContent = value + 'px';
-        }
-        
-        // Initialize margin, line height and font size
-        updateMargin(20);
-        updateLineHeight(2);
-        updateFontSize(16);
-    </script>
+document.getElementById('placeholder').style.display='none';document.getElementById('output').style.display='block'});
+function resetForm(){document.getElementById('leaveForm').reset();document.getElementById('schoolName').value='উদাহরণ উচ্চ বিদ্যালয়';document.getElementById('schoolAddress').value='গ্রাম: উদাহরণ, জেলা: উদাহরণ';document.getElementById('placeholder').style.display='block';document.getElementById('output').style.display='none';toggleDateFields()}
+function autoSaveFormData(){localStorage.setItem('leaveAppFormData',JSON.stringify({applicantName:document.getElementById('applicantName').value,designation:document.getElementById('designation').value,department:document.getElementById('department').value,leaveType:document.getElementById('leaveType').value,leaveDuration:document.querySelector('input[name="leaveDuration"]:checked').value,singleDate:document.getElementById('singleDate').value,startDate:document.getElementById('startDate').value,endDate:document.getElementById('endDate').value,totalDays:document.getElementById('totalDays').value,reason:document.getElementById('reason').value,schoolName:document.getElementById('schoolName').value,schoolAddress:document.getElementById('schoolAddress').value}))}
+function autoRestoreFormData(){const d=JSON.parse(localStorage.getItem('leaveAppFormData')||'{}');if(d.applicantName!==undefined){document.getElementById('applicantName').value=d.applicantName||'';document.getElementById('designation').value=d.designation||'';document.getElementById('department').value=d.department||'';document.getElementById('leaveType').value=d.leaveType||'বেতনহীন ছুটি';document.getElementById('singleDate').value=d.singleDate||'';document.getElementById('startDate').value=d.startDate||'';document.getElementById('endDate').value=d.endDate||'';document.getElementById('totalDays').value=d.totalDays||'';document.getElementById('reason').value=d.reason||'';document.getElementById('schoolName').value=d.schoolName||'উদাহরণ উচ্চ বিদ্যালয়';document.getElementById('schoolAddress').value=d.schoolAddress||'গ্রাম: উদাহরণ, জেলা: উদাহরণ';if(d.leaveDuration==='multiple'){document.querySelector('input[name="leaveDuration"][value="multiple"]').checked=true;toggleDateFields()}}}
+document.querySelectorAll('input,select,textarea').forEach(el=>{el.addEventListener('input',autoSaveFormData);el.addEventListener('change',autoSaveFormData)});
+function saveBackup(){localStorage.setItem('leaveAppBackup',JSON.stringify({applicantName:document.getElementById('applicantName').value,designation:document.getElementById('designation').value,department:document.getElementById('department').value,leaveType:document.getElementById('leaveType').value,leaveDuration:document.querySelector('input[name="leaveDuration"]:checked').value,singleDate:document.getElementById('singleDate').value,startDate:document.getElementById('startDate').value,endDate:document.getElementById('endDate').value,totalDays:document.getElementById('totalDays').value,reason:document.getElementById('reason').value,schoolName:document.getElementById('schoolName').value,schoolAddress:document.getElementById('schoolAddress').value,margin:document.getElementById('marginSlider').value,lineHeight:document.getElementById('lineHeightSlider').value,fontSize:document.getElementById('fontSizeSlider').value,backupDate:new Date().toLocaleString('bn-BD')}));showToast('✅ ব্যাকআপ সংরক্ষিত!','success');updateBackupStatus()}
+function restoreBackup(){const b=JSON.parse(localStorage.getItem('leaveAppBackup')||'null');if(b){document.getElementById('applicantName').value=b.applicantName||'';document.getElementById('designation').value=b.designation||'';document.getElementById('department').value=b.department||'';document.getElementById('leaveType').value=b.leaveType||'বেতনহীন ছুটি';document.getElementById('singleDate').value=b.singleDate||'';document.getElementById('startDate').value=b.startDate||'';document.getElementById('endDate').value=b.endDate||'';document.getElementById('totalDays').value=b.totalDays||'';document.getElementById('reason').value=b.reason||'';document.getElementById('schoolName').value=b.schoolName||'উদাহরণ উচ্চ বিদ্যালয়';document.getElementById('schoolAddress').value=b.schoolAddress||'গ্রাম: উদাহরণ, জেলা: উদাহরণ';if(b.margin){document.getElementById('marginSlider').value=b.margin;updateMargin(b.margin)}if(b.lineHeight){document.getElementById('lineHeightSlider').value=b.lineHeight;updateLineHeight(b.lineHeight)}if(b.fontSize){document.getElementById('fontSizeSlider').value=b.fontSize;updateFontSize(b.fontSize)}if(b.leaveDuration==='multiple')document.querySelector('input[name="leaveDuration"][value="multiple"]').checked=true;else document.querySelector('input[name="leaveDuration"][value="single"]').checked=true;toggleDateFields();showToast('✅ রিস্টোর হয়েছে!','success')}else showToast('❌ ব্যাকআপ নেই!','error')}
+function clearBackup(){if(confirm('ব্যাকআপ ডিলিট করবেন?')){localStorage.removeItem('leaveAppBackup');localStorage.removeItem('leaveAppFormData');updateBackupStatus();showToast('🗑️ মুছে ফেলা হয়েছে!','success')}}
+function updateBackupStatus(){const b=localStorage.getItem('leaveAppBackup');document.getElementById('backupStatus').innerHTML=b?`📦 শেষ ব্যাকআপ: ${JSON.parse(b).backupDate||'অজানা'}`:'📭 কোনো ব্যাকআপ নেই'}
+function showToast(msg,type){const t=document.createElement('div');t.className=`toast toast-${type}`;t.textContent=msg;document.body.appendChild(t);setTimeout(()=>t.remove(),3000)}
+function renderSavedApplications(){const apps=JSON.parse(localStorage.getItem('savedApplications')||'[]');const list=document.getElementById('savedAppsList');document.getElementById('appCounter').textContent=`সর্বমোট: ${apps.length.toString().replace(/[0-9]/g,d=>'০১২৩৪৫৬৭৮৯'[d])}টি`;if(!apps.length){list.innerHTML='<div class="no-saved-apps">কোনো আবেদন নেই</div>';return}list.innerHTML=apps.map((a,i)=>`<div class="saved-app-item"><div class="saved-app-info"><div class="saved-app-name">${i+1}. ${a.applicantName}</div><div class="saved-app-date">${a.savedDate} | ${a.leaveType}</div></div><div class="saved-app-actions"><button class="btn-load-app" onclick="loadApplication(${a.id})">লোড</button><button class="btn-delete-app" onclick="deleteApplication(${a.id})">✕</button></div></div>`).join('')}
+function saveCurrentApplication(){const n=document.getElementById('applicantName').value;if(!n.trim()){showToast('⚠️ নাম লিখুন!','error');return}const app={id:Date.now(),applicantName:n,designation:document.getElementById('designation').value,department:document.getElementById('department').value,leaveType:document.getElementById('leaveType').value,leaveDuration:document.querySelector('input[name="leaveDuration"]:checked').value,singleDate:document.getElementById('singleDate').value,startDate:document.getElementById('startDate').value,endDate:document.getElementById('endDate').value,totalDays:document.getElementById('totalDays').value,reason:document.getElementById('reason').value,schoolName:document.getElementById('schoolName').value,schoolAddress:document.getElementById('schoolAddress').value,margin:document.getElementById('marginSlider').value,lineHeight:document.getElementById('lineHeightSlider').value,fontSize:document.getElementById('fontSizeSlider').value,savedDate:new Date().toLocaleString('bn-BD')};const apps=JSON.parse(localStorage.getItem('savedApplications')||'[]');apps.push(app);localStorage.setItem('savedApplications',JSON.stringify(apps));renderSavedApplications();showToast('✅ সেভ হয়েছে!','success')}
+function loadApplication(id){const app=JSON.parse(localStorage.getItem('savedApplications')||'[]').find(a=>a.id===id);if(app){document.getElementById('applicantName').value=app.applicantName||'';document.getElementById('designation').value=app.designation||'';document.getElementById('department').value=app.department||'';document.getElementById('leaveType').value=app.leaveType||'বেতনহীন ছুটি';document.getElementById('singleDate').value=app.singleDate||'';document.getElementById('startDate').value=app.startDate||'';document.getElementById('endDate').value=app.endDate||'';document.getElementById('totalDays').value=app.totalDays||'';document.getElementById('reason').value=app.reason||'';document.getElementById('schoolName').value=app.schoolName||'উদাহরণ উচ্চ বিদ্যালয়';document.getElementById('schoolAddress').value=app.schoolAddress||'গ্রাম: উদাহরণ, জেলা: উদাহরণ';if(app.margin){document.getElementById('marginSlider').value=app.margin;updateMargin(app.margin)}if(app.lineHeight){document.getElementById('lineHeightSlider').value=app.lineHeight;updateLineHeight(app.lineHeight)}if(app.fontSize){document.getElementById('fontSizeSlider').value=app.fontSize;updateFontSize(app.fontSize)}if(app.leaveDuration==='multiple')document.querySelector('input[name="leaveDuration"][value="multiple"]').checked=true;else document.querySelector('input[name="leaveDuration"][value="single"]').checked=true;toggleDateFields();showToast('✅ লোড হয়েছে!','success')}}
+function deleteApplication(id){if(confirm('মুছে ফেলবেন?')){let apps=JSON.parse(localStorage.getItem('savedApplications')||'[]');apps=apps.filter(a=>a.id!==id);localStorage.setItem('savedApplications',JSON.stringify(apps));renderSavedApplications();showToast('🗑️ মুছে ফেলা হয়েছে!','success')}}
+function exportAllApplications(){const apps=JSON.parse(localStorage.getItem('savedApplications')||'[]');if(!apps.length){showToast('⚠️ কোনো আবেদন নেই!','error');return}const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify(apps,null,2)],{type:'application/json'}));a.download=`applications_${new Date().toISOString().slice(0,10)}.json`;a.click();showToast('📤 ডাউনলোড হয়েছে!','success')}
+function importApplications(e){const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=function(ev){try{const imported=JSON.parse(ev.target.result);if(!Array.isArray(imported)){showToast('❌ অবৈধ JSON!','error');return}let apps=JSON.parse(localStorage.getItem('savedApplications')||'[]');imported.forEach(a=>{a.id=Date.now()+Math.random();a.savedDate=new Date().toLocaleString('bn-BD');apps.push(a)});localStorage.setItem('savedApplications',JSON.stringify(apps));renderSavedApplications();showToast(`✅ ${imported.length.toString().replace(/[0-9]/g,d=>'০১২৩৪৫৬৭৮৯'[d])}টি ইম্পোর্ট!`,'success')}catch(err){showToast('❌ JSON পড়তে সমস্যা!','error')}};r.readAsText(f);e.target.value=''}
+function updateMargin(v){document.documentElement.style.setProperty('--margin-size',v+'px');document.getElementById('marginValue').textContent=v+'px'}
+function updateLineHeight(v){document.documentElement.style.setProperty('--line-height',v);document.getElementById('lineHeightValue').textContent=parseFloat(v).toFixed(1)}
+function updateFontSize(v){document.documentElement.style.setProperty('--font-size',v+'px');document.getElementById('fontSizeValue').textContent=v+'px'}
+toggleDateFields();autoRestoreFormData();updateBackupStatus();renderSavedApplications();updateMargin(20);updateLineHeight(2);updateFontSize(16);
+</script>
 </body>
 </html>
